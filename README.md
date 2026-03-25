@@ -1,4 +1,4 @@
-# 🔄 Workflow Task App
+# 🔄 Mackcliff Task App
 
 A full-stack workflow management application built with **React + Vite** (frontend) and **Node.js + Express + MongoDB** (backend).
 
@@ -160,4 +160,3 @@ task/
 
 ## 🔗 Live URLs
 
-- **Frontend:** [https://workflow-task.netlify.app](https://workflow-task.netlify.app)
