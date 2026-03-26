@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Editor from './pages/Editor';
+import Courses from './pages/Courses';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -19,6 +19,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/courses" element={<Courses />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
