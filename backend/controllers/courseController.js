@@ -1,8 +1,6 @@
 const Course = require('../models/Course');
 
-// @desc    Get all courses
-// @route   GET /api/courses
-// @access  Public
+
 const getCourses = async (req, res) => {
     try {
         const courses = await Course.find({});
@@ -12,9 +10,6 @@ const getCourses = async (req, res) => {
     }
 };
 
-// @desc    Get course by ID
-// @route   GET /api/courses/:id
-// @access  Public
 const getCourseById = async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
@@ -28,9 +23,7 @@ const getCourseById = async (req, res) => {
     }
 };
 
-// @desc    Create a course (For testing/admin)
-// @route   POST /api/courses
-// @access  Public (should be protected for admin ideally, simplifying for now)
+
 const createCourse = async (req, res) => {
     try {
         const { title, description, price, modulesCount, thumbnail, instructor } = req.body;

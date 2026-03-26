@@ -31,7 +31,6 @@ const enrollUser = async (req, res) => {
 
         res.status(201).json(enrollment);
     } catch (error) {
-        // Handle mongoose duplicate key error if reached here
         if (error.code === 11000) {
             return res.status(400).json({ message: 'You are already enrolled in this course' });
         }
@@ -64,7 +63,6 @@ const updateProgress = async (req, res) => {
             return res.status(404).json({ message: 'Enrollment not found' });
         }
 
-        // Ensure user owns this enrollment
         if (enrollment.user.toString() !== req.user._id.toString()) {
             return res.status(401).json({ message: 'Not authorized for this enrollment' });
         }
