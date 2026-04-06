@@ -14,7 +14,7 @@ const enrollmentSchema = new mongoose.Schema({
     progress: {
         type: Number,
         required: true,
-        default: 0, // Defines the percentage of completion from 0 to 100
+        default: 0, 
         min: 0,
         max: 100,
     }
@@ -22,7 +22,6 @@ const enrollmentSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-// A user can enroll in a course only once
 enrollmentSchema.index({ user: 1, course: 1 }, { unique: true });
 
 const Enrollment = mongoose.model('Enrollment', enrollmentSchema);
