@@ -33,6 +33,12 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/courses" element={<Courses />} />
+            {/* New functional placeholder routes */}
+            <Route path="/skills" element={<Dashboard />} />
+            <Route path="/analytics" element={<Dashboard />} />
+            <Route path="/ranking" element={<Dashboard />} />
+            <Route path="/settings" element={<Dashboard />} />
+            <Route path="/help" element={<Dashboard />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
