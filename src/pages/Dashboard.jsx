@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
                 <Navbar />
                 <div className="flex-1 flex items-center justify-center">
                     <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
     if (isError) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
                 <Navbar />
                 <div className="flex-1 flex flex-col items-center justify-center text-red-600">
                     <p>Error loading dashboard data: {error.message}</p>
@@ -66,24 +66,24 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
             <Navbar />
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8 flex justify-between items-center">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Your Learning Dashboard</h1>
-                        <p className="mt-2 text-gray-600">Track your progress and continue where you left off</p>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Your Learning Dashboard</h1>
+                        <p className="mt-2 text-gray-600 dark:text-gray-400">Track your progress and continue where you left off</p>
                     </div>
                 </div>
 
                 {/* Enrolled Courses Grid */}
                 {enrollments?.length === 0 ? (
-                    <div className="text-center p-12 bg-white rounded-xl border border-dashed border-gray-300 shadow-sm">
-                        <div className="mx-auto h-24 w-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                    <div className="text-center p-12 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 shadow-sm transition-colors">
+                        <div className="mx-auto h-24 w-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                            <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                         </div>
-                        <h3 className="text-xl font-medium text-gray-900">No courses enrolled yet</h3>
-                        <p className="mt-2 text-gray-500 max-w-sm mx-auto">Get started by exploring our course catalog and enroll in a topic that interests you.</p>
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">No courses enrolled yet</h3>
+                        <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-sm mx-auto">Get started by exploring our course catalog and enroll in a topic that interests you.</p>
                         <Link 
                             to="/courses" 
                             className="mt-6 inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"

@@ -54,7 +54,7 @@ const Courses = () => {
 
     if (loadingCourses || loadingEnrollments) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
                 <Navbar />
                 <div className="flex-1 flex items-center justify-center">
                     <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
@@ -64,19 +64,19 @@ const Courses = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
             <Navbar />
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Browse Courses</h1>
-                    <p className="mt-2 text-gray-600">Discover new skills and accelerate your career</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Browse Courses</h1>
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">Discover new skills and accelerate your career</p>
                 </div>
                 
                 {errorCourses ? (
                     <div className="bg-red-50 text-red-700 p-4 rounded-lg">Failed to load courses.</div>
                 ) : courses?.length === 0 ? (
-                    <div className="bg-white p-12 text-center rounded-xl border border-gray-200 shadow-sm">
-                        <p className="text-gray-500 text-lg">No courses available at the moment.</p>
+                    <div className="bg-white dark:bg-gray-900 p-12 text-center rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm transition-colors">
+                        <p className="text-gray-500 dark:text-gray-400 text-lg">No courses available at the moment.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
