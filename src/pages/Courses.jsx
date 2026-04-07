@@ -48,8 +48,8 @@ const Courses = () => {
     };
 
     const isEnrolledInCourse = (courseId) => {
-        if (!enrollments) return false;
-        return enrollments.some(e => e.course._id === courseId);
+        if (!Array.isArray(enrollments)) return false;
+        return enrollments.some(e => e.course?._id === courseId);
     };
 
     if (loadingCourses || loadingEnrollments) {
@@ -87,7 +87,7 @@ const Courses = () => {
                 <div className="bg-rose-50 dark:bg-rose-900/10 text-rose-600 p-6 rounded-2xl border border-rose-100 dark:border-rose-900/20 font-bold">
                     Failed to load courses. Please try again later.
                 </div>
-            ) : courses?.length === 0 ? (
+            ) : (!Array.isArray(courses) || courses.length === 0) ? (
                 <div className="bg-white dark:bg-gray-900 p-20 text-center rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all">
                     <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">No courses available at the moment.</p>
                 </div>

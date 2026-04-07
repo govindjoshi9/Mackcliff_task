@@ -2,8 +2,61 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --color-premium-slate: #0f172a;
+  --color-premium-blue: #3b82f6;
+  --color-premium-accent: #0ea5e9;
+}
+
 @layer base {
-  *, ::before, ::after {
-    @apply transition-colors duration-200;
+  :root {
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: rgba(31, 38, 135, 0.1);
   }
+
+  .dark {
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.3);
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-200 selection:text-blue-900 dark:bg-slate-950 dark:text-slate-100 dark:selection:bg-blue-500/30 dark:selection:text-blue-200 transition-colors duration-300;
+  }
+
+  *, ::before, ::after {
+    @apply border-slate-200 dark:border-slate-800 transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 border border-white/40 dark:border-white/10 shadow-xl;
+    will-change: transform, opacity;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 border border-white/40 dark:border-white/10 shadow-xl rounded-3xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01];
+    will-change: transform, box-shadow;
+  }
+
+  .premium-gradient {
+    @apply bg-linear-to-br from-blue-600 via-sky-500 to-indigo-600;
+  }
+
+  .premium-text-gradient {
+    @apply bg-linear-to-br from-blue-600 to-indigo-400 bg-clip-text text-transparent;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

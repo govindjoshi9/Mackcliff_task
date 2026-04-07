@@ -1,66 +1,89 @@
-import { Book, Clock, IndianRupee } from 'lucide-react';
+import React from 'react';
+import { Book, Clock, Star, PlayCircle } from 'lucide-react';
+import GlassCard from './common/GlassCard';
+import { motion } from 'framer-motion';
 
 const CourseCard = ({ course, isEnrolled, onEnroll, isEnrolling, progress, onUpdateProgress }) => {
     return (
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-all flex flex-col h-full">
-            <div className="h-48 bg-gray-200 dark:bg-gray-800 relative">
+        <GlassCard className="group flex flex-col h-full overflow-hidden p-0! border-none!">
+            {/* Thumbnail Wrap */}
+            <div className="h-52 overflow-hidden relative">
                 <img 
-                    src={course.thumbnail} 
+                    src={course.thumbnail || '/assets/hero.jpg'} 
                     alt={course.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 to-transparent opacity-60" />
+                
+                {isEnrolled && (
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-lg backdrop-blur-md">
+                        In Progress
+                    </div>
+                )}
+
+                <div className="absolute bottom-4 left-4 flex gap-2">
+                    <span className="px-2 py-1 bg-white/20 backdrop-blur-md rounded-md text-[10px] font-bold text-white uppercase tracking-wider border border-white/10">
+                        {course.modulesCount} Modules
+                    </span>
+                    <span className="px-2 py-1 bg-amber-500/80 backdrop-blur-md rounded-md text-[10px] font-bold text-white uppercase tracking-wider">
+                        Popular
+                    </span>
+                </div>
             </div>
-            <div className="p-5 flex-1 flex flex-col">
-                <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-2">{course.title}</h3>
+
+            {/* Content Wrap */}
+            <div className="p-6 flex-1 flex flex-col bg-white dark:bg-slate-900/50">
+                <div className="mb-4">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-500 transition-colors">
+                        {course.title}
+                    </h3>
+                    <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm line-clamp-2 font-medium">
+                        {course.description || "Master the art of this subject with our comprehensive guide and hands-on projects."}
+                    </p>
                 </div>
                 
-                <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm line-clamp-3">{course.description}</p>
-                
-                <div className="mt-4 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="flex items-center"><Book className="w-4 h-4 mr-1" /> {course.modulesCount} Modules</span>
-                    <span className="flex items-center"><IndianRupee className="w-4 h-4 mr-1" /> {course.price}</span>
-                </div>
-                
-                <div className="mt-auto pt-5">
+                <div className="mt-auto space-y-5">
                     {isEnrolled ? (
-                        <div className="space-y-3">
-                            <div>
-                                <div className="flex justify-between text-sm mb-1">
-                                    <span className="text-gray-700 dark:text-gray-300 font-medium">Progress</span>
-                                    <span className="text-blue-600 dark:text-blue-400 font-bold">{progress}%</span>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+                                    <span className="text-slate-400">Course Progress</span>
+                                    <span className="text-blue-500">{progress}%</span>
                                 </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                    <div 
-                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-500" 
-                                        style={{ width: `${progress}%` }}
-                                    ></div>
+                                <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                                    <motion.div 
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${progress}%` }}
+                                        transition={{ duration: 1, ease: "easeOut" }}
+                                        className="premium-gradient h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
+                                    />
                                 </div>
                             </div>
                             
                             <button
                                 onClick={() => onUpdateProgress(course._id)}
-                                className="w-full py-2 px-4 border border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 font-medium rounded-lg transition-colors text-sm"
+                                className="w-full py-3 px-4 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group/btn"
                             >
-                                Continue Learning
+                                <PlayCircle size={18} className="group-hover/btn:scale-110 transition-transform" />
+                                <span>Continue Lesson</span>
                             </button>
                         </div>
                     ) : (
                         <button
                             onClick={() => onEnroll(course._id)}
                             disabled={isEnrolling}
-                            className={`w-full py-2.5 px-4 rounded-lg font-medium text-white transition-colors
+                            className={`w-full py-3.5 px-4 rounded-xl font-bold text-white transition-all shadow-lg active:scale-95
                                 ${isEnrolling 
                                     ? 'bg-blue-400 cursor-not-allowed' 
-                                    : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+                                    : 'premium-gradient hover:shadow-blue-500/25'
                                 }`}
                         >
-                            {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
+                            {isEnrolling ? 'Processing...' : 'Start Learning Now'}
                         </button>
                     )}
                 </div>
             </div>
-        </div>
+        </GlassCard>
     );
 };
 

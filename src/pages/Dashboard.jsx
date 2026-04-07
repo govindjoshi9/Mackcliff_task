@@ -7,13 +7,15 @@ import StatsGrid from '../components/dashboard/StatsGrid';
 import AnalyticsGraph from '../components/dashboard/AnalyticsGraph';
 import Leaderboard from '../components/dashboard/Leaderboard';
 import SkillsRadar from '../components/dashboard/SkillsRadar';
-import { Loader2, Plus, ArrowRight } from 'lucide-react';
+import DashboardHero from '../components/dashboard/DashboardHero';
+import GlassCard from '../components/common/GlassCard';
+import { Loader2, Plus, ArrowRight, Rss, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Dashboard = () => {
     const queryClient = useQueryClient();
 
-    // Fetch user enrollments
     const { data: enrollments, isLoading, isError, error } = useQuery({
         queryKey: ['enrollments'],
         queryFn: async () => {
@@ -22,7 +24,6 @@ const Dashboard = () => {
         },
     });
 
-    // Update Progress Mutation
     const updateProgressMutation = useMutation({
         mutationFn: async ({ enrollmentId, newProgress }) => {
             const response = await api.put(`/enrollments/${enrollmentId}/progress`, { progress: newProgress });
@@ -31,9 +32,6 @@ const Dashboard = () => {
         onSuccess: () => {
             queryClient.invalidateQueries(['enrollments']);
         },
-        onError: (error) => {
-            alert(error.response?.data?.message || 'Failed to update progress');
-        }
     });
 
     const handleUpdateProgress = (enrollmentId, currentProgress) => {
@@ -43,102 +41,116 @@ const Dashboard = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
-                <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+                <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
             </div>
         );
     }
 
-    if (isError) {
-        return (
-            <DashboardLayout>
-                <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
-                    <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-3xl mb-6">
-                        <Loader2 className="w-12 h-12 text-red-500 rotate-45" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Oops! Something went wrong</h2>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-md">
-                        {error?.response?.data?.message || error?.message || "We couldn't load your dashboard. Please try again later."}
-                    </p>
-                    <button 
-                        onClick={() => queryClient.invalidateQueries(['enrollments'])}
-                        className="mt-8 px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg"
-                    >
-                        Retry Loading
-                    </button>
-                </div>
-            </DashboardLayout>
-        );
-    }
+    const newsItems = [
+        { id: 1, title: "NASA's Artemis III Mission Updates", time: "2h ago", image: "/assets/dashboard-welcome.jpg" },
+        { id: 2, title: "New Robotics Module Now Live", time: "5h ago", image: "/assets/robotics.jpg" },
+        { id: 3, title: "Top 10 Algebra Finalists Announced", time: "1d ago", image: "/assets/project-algebra.jpg" }
+    ];
 
     return (
         <DashboardLayout>
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Welcome back, Student! 👋</h1>
-                    <p className="text-gray-500 dark:text-gray-400 font-medium mt-1">Here's what's happening with your learning journey today.</p>
-                </div>
-                <Link 
-                    to="/courses" 
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-95"
-                >
-                    <Plus size={18} />
-                    <span>Explore New Courses</span>
-                </Link>
-            </div>
+            <DashboardHero userName="Alex" />
 
-            {/* Gamification Stats */}
             <StatsGrid />
 
-            {/* Analytics, Skills & Ranking Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
-                    <AnalyticsGraph />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Analytics & Skills - Main 8 columns */}
+                <div className="lg:col-span-8 space-y-8">
+                    <GlassCard title="Learning Pulse">
+                        <div className="h-[320px] mt-4">
+                            <AnalyticsGraph />
+                        </div>
+                    </GlassCard>
+
+                    <section className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-bold bg-linear-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">Continued Learning</h2>
+                            <Link to="/courses" className="text-sm font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:gap-2 transition-all group">
+                                View Catalog <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </div>
+
+                        {(!enrollments || enrollments.length === 0) ? (
+                            <GlassCard className="text-center p-16 border-dashed! dark:border-slate-800">
+                                <div className="mx-auto h-20 w-20 bg-blue-500/10 rounded-full flex items-center justify-center mb-6">
+                                    <Plus size={32} className="text-blue-500" />
+                                </div>
+                                <h3 className="text-xl font-bold">No active enrollments</h3>
+                                <p className="mt-2 text-slate-500 max-w-sm mx-auto font-medium">Your next big discovery is just a click away.</p>
+                                <Link 
+                                    to="/courses" 
+                                    className="mt-8 inline-flex items-center justify-center px-10 py-3.5 bg-slate-900 dark:bg-blue-600 text-white font-bold rounded-2xl hover:scale-105 transition-all shadow-xl"
+                                >
+                                    Explore Courses
+                                </Link>
+                            </GlassCard>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {Array.isArray(enrollments) && enrollments.slice(0, 4).map((enrollment, idx) => (
+                                    <motion.div
+                                        key={enrollment._id}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: idx * 0.1 }}
+                                    >
+                                        <CourseCard
+                                            course={enrollment.course}
+                                            isEnrolled={true}
+                                            progress={enrollment.progress}
+                                            onUpdateProgress={() => handleUpdateProgress(enrollment._id, enrollment.progress)}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </div>
+                        )}
+                    </section>
                 </div>
-                <div className="space-y-8 flex flex-col h-full">
+
+                {/* Sidebar widgets - Right 4 columns */}
+                <div className="lg:col-span-4 space-y-8 h-fit">
+                    <GlassCard className="border-none!">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="p-2.5 bg-blue-500/20 rounded-xl">
+                                <Rss className="text-blue-400" size={20} />
+                            </div>
+                            <h3 className="text-xl font-bold tracking-tight dark:text-white">Tech & Science Feed</h3>
+                        </div>
+                        
+                        <div className="space-y-6">
+                            {newsItems.map((news) => (
+                                <div key={news.id} className="group cursor-pointer">
+                                    <div className="flex gap-4 items-center">
+                                        <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-slate-700">
+                                            <img src={news.image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h4 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors leading-snug">{news.title}</h4>
+                                            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium font-sans">
+                                                <Clock size={12} />
+                                                {news.time}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <button className="w-full mt-10 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 font-bold text-sm transition-all border border-slate-200 dark:border-slate-700/50">
+                            View All Updates
+                        </button>
+                    </GlassCard>
+
                     <SkillsRadar />
+
                     <Leaderboard />
                 </div>
             </div>
-
-            {/* Active Courses Section */}
-            <section className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Active Courses</h2>
-                    <Link to="/my-courses" className="text-sm font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:gap-2 transition-all">
-                        View All <ArrowRight size={14} />
-                    </Link>
-                </div>
-
-                {(!enrollments || enrollments.length === 0) ? (
-                    <div className="text-center p-16 bg-white dark:bg-gray-900 rounded-3xl border border-dashed border-gray-200 dark:border-gray-800 shadow-sm transition-all">
-                        <div className="mx-auto h-24 w-24 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
-                            <Plus size={32} className="text-gray-300 dark:text-gray-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">No active enrollments</h3>
-                        <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-sm mx-auto font-medium">Start your learning journey by exploring our international course catalog.</p>
-                        <Link 
-                            to="/courses" 
-                            className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-gray-900 dark:bg-blue-600 text-white font-bold rounded-xl hover:bg-gray-800 dark:hover:bg-blue-700 transition-all shadow-xl"
-                        >
-                            Start Browsing
-                        </Link>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                        {Array.isArray(enrollments) && enrollments.slice(0, 3).map((enrollment) => (
-                            <CourseCard
-                                key={enrollment._id}
-                                course={enrollment.course}
-                                isEnrolled={true}
-                                progress={enrollment.progress}
-                                onUpdateProgress={() => handleUpdateProgress(enrollment._id, enrollment.progress)}
-                            />
-                        ))}
-                    </div>
-                )}
-            </section>
         </DashboardLayout>
     );
 };
