@@ -26,7 +26,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
       <div className="p-6 flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
         {!isCollapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">EE</span>
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">Educating Excellence</span>

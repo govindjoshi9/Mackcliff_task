@@ -57,7 +57,7 @@ const DashboardHero = ({ userName = "Student" }) => {
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-8 shadow-xl shadow-blue-500/10"
         >
           <Sparkles size={14} />
-          Mackcliff Elite
+           Elite
         </motion.div>
         
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter mb-6 leading-[0.9]">

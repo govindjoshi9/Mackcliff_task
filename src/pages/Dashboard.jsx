@@ -9,9 +9,12 @@ import Leaderboard from '../components/dashboard/Leaderboard';
 import SkillsRadar from '../components/dashboard/SkillsRadar';
 import DashboardHero from '../components/dashboard/DashboardHero';
 import GlassCard from '../components/common/GlassCard';
-import { Loader2, Plus, ArrowRight, Rss, Clock } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+    Loader2, Plus, ArrowRight, Rss, Clock, 
+    ChevronLeft, ChevronRight, Compass 
+} from 'lucide-react';
 
 const newsItems = [
     { id: 1, title: "NASA's Artemis III Mission Updates", time: "2h ago", image: "/assets/dashboard-welcome.webp" },
@@ -21,6 +24,18 @@ const newsItems = [
 
 const Dashboard = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    const [sliderIndex, setSliderIndex] = React.useState(0);
+    const scrollContainerRef = React.useRef(null);
+
+    // Fetch all available courses for the "Explore" slider
+    const { data: courses, isLoading: loadingCatalog } = useQuery({
+        queryKey: ['courses'],
+        queryFn: async () => {
+            const response = await api.get('/courses');
+            return response.data;
+        },
+    });
 
     const { data: enrollments, isLoading, isError, error } = useQuery({
         queryKey: ['enrollments'],
@@ -45,7 +60,33 @@ const Dashboard = () => {
         updateProgressMutation.mutate({ enrollmentId, newProgress });
     };
 
-    if (isLoading) {
+    const handleEnroll = async (courseId) => {
+        try {
+            await api.post('/enrollments', { courseId });
+            queryClient.invalidateQueries(['enrollments']);
+        } catch (error) {
+            console.error('Enrollment failed:', error);
+        }
+    };
+
+    const isEnrolledInCourse = (courseId) => {
+        if (!Array.isArray(enrollments)) return false;
+        return enrollments.some(e => e.course?._id === courseId);
+    };
+
+    const nextSlide = () => {
+        if (courses && sliderIndex < courses.length - 2) {
+            setSliderIndex(prev => prev + 1);
+        }
+    };
+
+    const prevSlide = () => {
+        if (sliderIndex > 0) {
+            setSliderIndex(prev => prev - 1);
+        }
+    };
+
+    if (isLoading || loadingCatalog) {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
                 <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
@@ -111,48 +152,70 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Row 4: Learning & Sidebar (8:4 Split) */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-8">
-                        <section className="space-y-6">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-2xl font-bold bg-linear-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">Explore Courses</h2>
-                                <Link to="/courses" className="text-sm font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:gap-2 transition-all group">
-                                    View Catalog <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                                </Link>
+                {/* Row 4: Explore & Leaderboard (8:4 Split) */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <div className="lg:col-span-8 overflow-hidden">
+                        <section className="space-y-8 relative group">
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-amber-500/10 rounded-xl">
+                                        <Compass className="text-amber-500" size={22} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold bg-linear-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">Explore Courses</h2>
+                                </div>
+                                <div className="flex items-center gap-6">
+                                    <div className="hidden group-hover:flex items-center gap-2">
+                                        <button 
+                                            onClick={prevSlide}
+                                            disabled={sliderIndex === 0}
+                                            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all hover:scale-110 active:scale-95 text-slate-600 dark:text-slate-300"
+                                        >
+                                            <ChevronLeft size={18} />
+                                        </button>
+                                        <button 
+                                            onClick={nextSlide}
+                                            disabled={!courses || sliderIndex >= courses.length - 2}
+                                            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 disabled:opacity-30 transition-all hover:scale-110 active:scale-95 text-slate-600 dark:text-slate-300"
+                                        >
+                                            <ChevronRight size={18} />
+                                        </button>
+                                    </div>
+                                    <Link to="/courses" className="text-sm font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:gap-2 transition-all group/link">
+                                        View All <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                                    </Link>
+                                </div>
                             </div>
 
-                            {(!enrollments || enrollments.length === 0) ? (
+                            {(!courses || courses.length === 0) ? (
                                 <GlassCard className="text-center p-16 border-dashed! dark:border-slate-800">
                                     <div className="mx-auto h-20 w-20 bg-blue-500/10 rounded-full flex items-center justify-center mb-6">
-                                        <Plus size={32} className="text-blue-500" />
+                                        <Compass size={32} className="text-blue-500" />
                                     </div>
-                                    <h3 className="text-xl font-bold">No active enrollments</h3>
-                                    <p className="mt-2 text-slate-500 max-w-sm mx-auto font-medium">Your next big discovery is just a click away.</p>
-                                    <Link 
-                                        to="/courses" 
-                                        className="mt-8 inline-flex items-center justify-center px-10 py-3.5 bg-slate-900 dark:bg-blue-600 text-white font-bold rounded-2xl hover:scale-105 transition-all shadow-xl"
-                                    >
-                                        Explore Courses
-                                    </Link>
+                                    <h3 className="text-xl font-bold">No courses discovered</h3>
+                                    <p className="mt-2 text-slate-500 max-w-sm mx-auto font-medium">Check back later for new international certifications.</p>
                                 </GlassCard>
                             ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {Array.isArray(enrollments) && enrollments.slice(0, 4).map((enrollment, idx) => (
-                                        <motion.div
-                                            key={enrollment._id}
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ delay: idx * 0.1 }}
-                                        >
-                                            <CourseCard
-                                                course={enrollment.course}
-                                                isEnrolled={true}
-                                                progress={enrollment.progress}
-                                                onUpdateProgress={() => handleUpdateProgress(enrollment._id, enrollment.progress)}
-                                            />
-                                        </motion.div>
-                                    ))}
+                                <div className="relative overflow-visible">
+                                    <motion.div 
+                                        className="flex gap-8"
+                                        animate={{ x: `-${sliderIndex * 50}%` }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                    >
+                                        {courses.map((course, idx) => {
+                                            const enrollment = enrollments?.find(e => e.course?._id === course._id);
+                                            return (
+                                                <div key={course._id} className="min-w-[calc(50%-16px)] flex-shrink-0">
+                                                    <CourseCard
+                                                        course={course}
+                                                        isEnrolled={!!enrollment}
+                                                        progress={enrollment?.progress}
+                                                        onEnroll={() => handleEnroll(course._id)}
+                                                        onUpdateProgress={() => handleUpdateProgress(enrollment._id, enrollment.progress)}
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                    </motion.div>
                                 </div>
                             )}
                         </section>
