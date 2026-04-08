@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Trophy, TrendingUp, TrendingDown, Minus, Medal } from 'lucide-react';
 import GlassCard from '../common/GlassCard';
 
-const Leaderboard = () => {
+const Leaderboard = ({ delay = 0 }) => {
   const students = [
     { id: 1, name: 'Alex Johnson', points: '12,450', country: 'USA', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex', trend: 'up' },
     { id: 2, name: 'Maria Garcia', points: '11,820', country: 'Spain', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria', trend: 'down' },
@@ -12,7 +12,7 @@ const Leaderboard = () => {
   ];
 
   return (
-    <GlassCard className="flex flex-col">
+    <GlassCard delay={delay} className="flex flex-col">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center shadow-inner">
@@ -65,4 +65,4 @@ const Leaderboard = () => {
   );
 };
 
-export default Leaderboard;
+export default memo(Leaderboard);

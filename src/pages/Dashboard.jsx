@@ -13,6 +13,12 @@ import { Loader2, Plus, ArrowRight, Rss, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+const newsItems = [
+    { id: 1, title: "NASA's Artemis III Mission Updates", time: "2h ago", image: "/assets/dashboard-welcome.webp" },
+    { id: 2, title: "New Robotics Module Now Live", time: "5h ago", image: "/assets/robotics.webp" },
+    { id: 3, title: "Top 10 Algebra Finalists Announced", time: "1d ago", image: "/assets/project-algebra.webp" }
+];
+
 const Dashboard = () => {
     const queryClient = useQueryClient();
 
@@ -47,22 +53,18 @@ const Dashboard = () => {
         );
     }
 
-    const newsItems = [
-        { id: 1, title: "NASA's Artemis III Mission Updates", time: "2h ago", image: "/assets/dashboard-welcome.jpg" },
-        { id: 2, title: "New Robotics Module Now Live", time: "5h ago", image: "/assets/robotics.jpg" },
-        { id: 3, title: "Top 10 Algebra Finalists Announced", time: "1d ago", image: "/assets/project-algebra.jpg" }
-    ];
+
 
     return (
         <DashboardLayout>
             <DashboardHero userName="Alex" />
 
-            <StatsGrid />
+            <StatsGrid delay={0.2} />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Analytics & Skills - Main 8 columns */}
                 <div className="lg:col-span-8 space-y-8">
-                    <GlassCard title="Learning Pulse">
+                    <GlassCard title="Learning Pulse" delay={0.4}>
                         <div className="h-[320px] mt-4">
                             <AnalyticsGraph />
                         </div>
@@ -145,10 +147,10 @@ const Dashboard = () => {
                             View All Updates
                         </button>
                     </GlassCard>
-
-                    <SkillsRadar />
-
-                    <Leaderboard />
+ 
+                     <SkillsRadar delay={0.6} />
+ 
+                     <Leaderboard delay={0.7} />
                 </div>
             </div>
         </DashboardLayout>

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Zap, Trophy, Target, Globe, ArrowUpRight } from 'lucide-react';
 import GlassCard from '../common/GlassCard';
 import { motion } from 'framer-motion';
 
-const StatCard = ({ title, value, icon: Icon, color, detail, delay }) => (
+const StatCard = memo(({ title, value, icon: Icon, color, detail, delay }) => (
   <GlassCard delay={delay} className="group overflow-hidden relative border-none! h-full">
     {/* Animated background glow */}
     <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 blur-3xl transition-all group-hover:scale-150 ${color}`} />
@@ -25,9 +25,9 @@ const StatCard = ({ title, value, icon: Icon, color, detail, delay }) => (
       </div>
     </div>
   </GlassCard>
-);
+));
 
-const StatsGrid = () => {
+const StatsGrid = ({ delay = 0 }) => {
   const stats = [
     { 
       title: 'Daily Points', 
@@ -62,10 +62,10 @@ const StatsGrid = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 h-full">
       {stats.map((stat, idx) => (
-        <StatCard key={stat.title} {...stat} delay={idx * 0.1} />
+        <StatCard key={stat.title} {...stat} delay={delay + (idx * 0.1)} />
       ))}
     </div>
   );
 };
 
-export default StatsGrid;
+export default memo(StatsGrid);

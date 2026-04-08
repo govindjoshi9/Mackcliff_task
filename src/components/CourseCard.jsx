@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Book, Clock, Star, PlayCircle } from 'lucide-react';
 import GlassCard from './common/GlassCard';
 import { motion } from 'framer-motion';
@@ -87,4 +87,4 @@ const CourseCard = ({ course, isEnrolled, onEnroll, isEnrolling, progress, onUpd
     );
 };
 
-export default CourseCard;
+export default memo(CourseCard);

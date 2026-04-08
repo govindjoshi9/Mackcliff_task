@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Award, CheckCircle2, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import GlassCard from '../common/GlassCard';
 
-const SkillsRadar = () => {
+const SkillsRadar = ({ delay = 0 }) => {
   const skills = [
     { name: 'Web Development', level: 'Intermediate', progress: 65, color: 'from-blue-500 to-indigo-600' },
     { name: 'Python Programming', level: 'Beginner', progress: 30, color: 'from-emerald-400 to-teal-500' },
@@ -12,7 +12,7 @@ const SkillsRadar = () => {
   ];
 
   return (
-    <GlassCard className="flex flex-col">
+    <GlassCard delay={delay} className="flex flex-col">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center shadow-inner">
@@ -46,7 +46,7 @@ const SkillsRadar = () => {
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${skill.progress}%` }}
-                transition={{ duration: 1.2, delay: index * 0.1, ease: "easeOut" }}
+                transition={{ duration: 1.2, delay: delay + (index * 0.1), ease: "easeOut" }}
                 className={`h-full rounded-full bg-linear-to-r ${skill.color} shadow-[0_0_12px_rgba(59,130,246,0.3)] relative`}
               >
                 {/* Glossy Overlay */}
@@ -66,4 +66,4 @@ const SkillsRadar = () => {
   );
 };
 
-export default SkillsRadar;
+export default memo(SkillsRadar);

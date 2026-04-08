@@ -8,7 +8,7 @@ const DashboardHero = ({ userName = "Student" }) => {
       {/* Background Image with Creative Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center h-[120%] -top-[10%] scale-105"
-        style={{ backgroundImage: "url('/assets/dashboard-welcome.jpg')" }}
+        style={{ backgroundImage: "url('/assets/dashboard-welcome.webp')" }}
       >
         <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-900/60 to-transparent" />
         <div className="absolute inset-0 bg-radial-gradient from-blue-500/10 via-transparent to-transparent opacity-50" />

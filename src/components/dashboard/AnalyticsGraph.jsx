@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 
 const AnalyticsGraph = () => {
@@ -60,4 +60,4 @@ const AnalyticsGraph = () => {
   );
 };
 
-export default AnalyticsGraph;
+export default memo(AnalyticsGraph);
