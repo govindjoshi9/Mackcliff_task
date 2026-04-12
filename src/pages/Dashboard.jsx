@@ -28,7 +28,6 @@ const Dashboard = () => {
     const [sliderIndex, setSliderIndex] = React.useState(0);
     const scrollContainerRef = React.useRef(null);
 
-    // Fetch all available courses for the "Explore" slider
     const { data: courses, isLoading: loadingCatalog } = useQuery({
         queryKey: ['courses'],
         queryFn: async () => {

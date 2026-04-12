@@ -13,8 +13,8 @@ import { useEffect } from 'react';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30,    // 30 minutes
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -42,7 +42,6 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/courses" element={<Courses />} />
-            {/* New functional placeholder routes */}
             <Route path="/skills" element={<Dashboard />} />
             <Route path="/analytics" element={<Dashboard />} />
             <Route path="/ranking" element={<Dashboard />} />

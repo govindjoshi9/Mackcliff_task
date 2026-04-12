@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
 import CourseCard from '../components/CourseCard';
@@ -10,7 +9,6 @@ const Courses = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     
-    // Fetch all courses
     const { data: courses, isLoading: loadingCourses, isError: errorCourses } = useQuery({
         queryKey: ['courses'],
         queryFn: async () => {
@@ -19,7 +17,6 @@ const Courses = () => {
         },
     });
 
-    // Fetch user enrollments to check if already enrolled
     const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
         queryKey: ['enrollments'],
         queryFn: async () => {
@@ -28,7 +25,6 @@ const Courses = () => {
         },
     });
 
-    // Enroll Mutation
     const enrollMutation = useMutation({
         mutationFn: async (courseId) => {
             const response = await api.post('/enrollments', { courseId });

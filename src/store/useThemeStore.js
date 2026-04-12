@@ -6,7 +6,7 @@ const useThemeStore = create(
     (set) => ({
       isDarkMode: false,
       toggleDarkMode: () => set((state) => {
-        const nextMode = !state.isDarkMode;
+        const nextMode = !state.isDarkMode; 
         // Apply class to document element directly for reactive UI updates
         if (nextMode) {
           document.documentElement.classList.add('dark');
