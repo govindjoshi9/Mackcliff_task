@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 const useThemeStore = create(
   persist(
     (set) => ({
-      isDarkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      isDarkMode: false,
       toggleDarkMode: () => set((state) => {
         const nextMode = !state.isDarkMode;
         // Apply class to document element directly for reactive UI updates
