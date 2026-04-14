@@ -4,3 +4,4 @@ dist
 build
 lms
 *.pem
+.git
