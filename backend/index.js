@@ -11,7 +11,7 @@ const app = express();
 // add frontend in backend for deployment
 app.use(express.static('public'));
 app.use(cors({
-    origin: '*', 
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
