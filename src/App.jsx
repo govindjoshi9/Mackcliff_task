@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import useThemeStore from './store/useThemeStore';
 import { useEffect } from 'react';
+import { DashboardN } from './pages/DashboardN';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,13 +41,14 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Dashboard />} />
+             <Route path="/" element={<DashboardN />} />
+            {/* <Route path="/" element={<Dashboard />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/skills" element={<Dashboard />} />
             <Route path="/analytics" element={<Dashboard />} />
             <Route path="/ranking" element={<Dashboard />} />
             <Route path="/settings" element={<Dashboard />} />
-            <Route path="/help" element={<Dashboard />} />
+            <Route path="/help" element={<Dashboard />} /> */}
           </Route>
 
           <Route path="*" element={<NotFound />} />
